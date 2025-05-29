@@ -213,6 +213,13 @@ https://lbn4.sxlebainian.cn/videoDetail/?state=MTQ3NDg3Nzg0ODc4MDgsMTc0MywxNzQ4N
             if (!localStorage.getItem('currentIndex')) {
                 // 自动跳转到第一个链接
                 openLink(links[0]);
+            } else if (performance.navigation.type === 2) { // 如果是从其他页面返回
+                if (currentIndex < links.length - 1) {
+                    currentIndex++;
+                    localStorage.setItem('currentIndex', currentIndex);
+                    // 自动跳转到下一个链接
+                    openLink(links[currentIndex]);
+                }
             }
             updateButtonStates();
         };
