@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>链接导航器</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f0f2f5;
+        }
+        .container {
+            text-align: center;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .navigation {
+            margin: 20px 0;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        .current-link {
+            margin: 20px 0;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>链接导航器</h1>
+        <div class="current-link">
+            <p>当前链接：<span id="currentUrl">-</span></p>
+        </div>
+        <div class="navigation">
+            <button id="prevBtn" onclick="navigatePrev()">上一个</button>
+            <button id="nextBtn" onclick="navigateNext()">下一个</button>
+        </div>
+    </div>
+
+    <script>
+        // 在这里添加你的链接数组
+        const links = [
+            "https://baidu.com",
+            "https://taobao.com",
+            "https://jd.com",
+            // 添加更多链接...
+        ];
+
+        // 从localStorage获取当前索引，如果没有则默认为0
+        let currentIndex = parseInt(localStorage.getItem('currentIndex')) || 0;
+
+        // 更新按钮状态
+        function updateButtonStates() {
+            document.getElementById('prevBtn').disabled = currentIndex === 0;
+            document.getElementById('nextBtn').disabled = currentIndex === links.length - 1;
+            document.getElementById('currentUrl').textContent = links[currentIndex];
+        }
+
+        // 打开链接的函数
+        function openLink(url) {
+            window.open(url, '_blank');
+        }
+
+        // 导航到上一个链接
+        function navigatePrev() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                localStorage.setItem('currentIndex', currentIndex);
+                updateButtonStates();
+                openLink(links[currentIndex]);
+            }
+        }
+
+        // 导航到下一个链接
+        function navigateNext() {
+            if (currentIndex < links.length - 1) {
+                currentIndex++;
+                localStorage.setItem('currentIndex', currentIndex);
+                updateButtonStates();
+                openLink(links[currentIndex]);
+            }
+        }
+
+        // 页面加载时的处理
+        window.onload = function() {
+            // 检查是否是首次访问（没有存储的索引）
+            if (!localStorage.getItem('currentIndex')) {
+                // 自动跳转到第一个链接
+                openLink(links[0]);
+            }
+            updateButtonStates();
+        };
+
+        // 初始化按钮状态
+        updateButtonStates();
+    </script>
+</body>
+</html> 
